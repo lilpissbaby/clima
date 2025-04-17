@@ -2,14 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Contenido del XML</title>
+  <style>
+    #taulaTemperaturas {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+
+    #taulaTemperaturas th, #taulaTemperaturas td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    #taulaTemperaturas th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <p>Comarques:</p>
-  <select id="comarques" onchange="mostrarTemperatures()">Comarques</select>
-
+  <select id="comarques" onchange="mostrarTemperatures(this)">Comarques</select>
+  <table id="taulaTemperaturas">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Temperatura Mínima</th>
+        <th>Temperatura Màxima</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
   <script>
-    // es declara l'objecte xml que servirá per més endaavnt
+    // es declara una variable que allotjarà el document xml per més endavant
     xmlGlobal = '';
 
     async function cargarXML() {
@@ -36,18 +63,27 @@
         }
     }
 
-    function mostrarTemperatures(){
-      // per saber el id de la comarca seleccionada, agafem el valor del selector
-      // fem ananr this, doncs correspondrá al valor actual del propi selector
-      idComarca = this.value;
+    function mostrarTemperatures(selector){
+      // passant el mateix selector com a parámetre podem treure el seu valor en cas de canviar, que és l'event associat a la funció
+      idComarca = selector.value;
       
-      // cada element <prediccio> te un element <variable> que correspon al primer i segon dia següent a l'actual, respectivament.
-      // per tant, el dia immediatament següent és el primer fill de <variable>, del qual extraurem els seus atributs de temperatures
-      //diaDema = statsComarca.firstElementChild;
+      // sabent el id de la comarca, hem de buscar la predicció que tingui el mateix id, i d'allí, agafem la temperaturadel dia següent
+      prediccioComarca = xmlGlobal.getElementsByTagName('prediccio')[0].firstChild;
 
-      //alert(`Temperatura maxima prevista: ${diaDema.getAttribute(tempmax)}}\n`);
-      alert(idComarca);
+      // sabem que cada prediccio té dos elements fills, el dia següent el següent a l'anterior. ens volem quedar amb el primer, que té les temepratures de demá mateix
+      //seguentDia = prediccioComarca.firstElementChild;
+      const taula = document.getElementById('taulaTemperaturas').querySelector('tbody');
+      taula.innerHTML = ''; // Netejar la taula abans d'afegir noves dades
+      const fila = document.createElement('tr');
+      fila.innerHTML = `
+        <td>${prediccioComarca.getAttribute('data')}</td>
+        <td>${prediccioComarca.getAttribute('tempmin')}</td>
+        <td>${prediccioComarca.getAttribute('tempmax')}</td>
+      `;
+      taula.appendChild(fila);    
     }
+
+
 
     // Cargar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', cargarXML);

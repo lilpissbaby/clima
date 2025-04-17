@@ -10,10 +10,10 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = 3000;
 
-// Middleware para servir archivos estáticos
+// Middleware per fer anar fitxers estàtics, com és el cas
 app.use(express.static(path.join(__dirname)));
 
-// Habilitar CORS (solo para desarrollo)
+// Habilitar CORS 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -28,6 +28,6 @@ app.get('/xml', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
-    console.log(`Accede a la página en http://localhost:${PORT}/index.html`);
+    console.log(`Servidor escoltant en http://localhost:${PORT}`);
+    console.log(`Accedir al client en http://localhost:${PORT}/index.html`);
 });
