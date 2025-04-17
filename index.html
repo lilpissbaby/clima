@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contenido del XML</title>
+</head>
+<body>
+  <p>Comarques:</p>
+  <select id="comarques" onchange="mostrarTemperatures()">Comarques</select>
+
+  <script>
+    // es declara l'objecte xml que servirá per més endaavnt
+    xmlGlobal = '';
+
+    async function cargarXML() {
+
+        // URL relativa al mateix origen, per evitar problemes amb CORS
+        const respuesta = await fetch('/xml');
+        
+        // La mateixa resposta es pot llegir com a text
+        const xmlTexto = await respuesta.text();
+
+        //  amb la respota en text, ara fem un parseig per tractar-ho com un xml
+        parser = new DOMParser();
+        xmlGlobal = parser.parseFromString(xmlTexto, "text/xml");
+
+        // amb el parseig fet, podrem sense problema seleccionar node  anode. per això, els anem incloent al selector
+        selectorComarques = document.getElementById('comarques');
+
+        for(i = 0; i < xmlGlobal.getElementsByTagName("comarca").length; i++){
+            // per cada comarca, afegim una opció al selector
+            opcioComarca = document.createElement("option");
+            opcioComarca.value = xmlGlobal.getElementsByTagName("comarca")[i].getAttribute("id");
+            opcioComarca.text = xmlGlobal.getElementsByTagName("comarca")[i].getAttribute("nomCOMARCA");
+            selectorComarques.appendChild(opcioComarca);
+        }
+    }
+
+    function mostrarTemperatures(){
+      // per saber el id de la comarca seleccionada, agafem el valor del selector
+      // fem ananr this, doncs correspondrá al valor actual del propi selector
+      idComarca = this.value;
+      
+      // cada element <prediccio> te un element <variable> que correspon al primer i segon dia següent a l'actual, respectivament.
+      // per tant, el dia immediatament següent és el primer fill de <variable>, del qual extraurem els seus atributs de temperatures
+      //diaDema = statsComarca.firstElementChild;
+
+      //alert(`Temperatura maxima prevista: ${diaDema.getAttribute(tempmax)}}\n`);
+      alert(idComarca);
+    }
+
+    // Cargar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', cargarXML);
+  </script>
+</body>
+</html>
