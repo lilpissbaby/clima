@@ -3,21 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    #taulaTemperaturas {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: Arial, sans-serif;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f0f2f5;
     }
 
-    #taulaTemperaturas th, #taulaTemperaturas td {
+    p {
+      font-size: 1.2em;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    #comarques {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
       border: 1px solid #ddd;
-      padding: 8px;
+      border-radius: 6px;
+      font-size: 16px;
+      background-color: white;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    #comarques:hover {
+      border-color: #3498db;
+    }
+
+    #taulaTemperaturas {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #taulaTemperaturas th, 
+    #taulaTemperaturas td {
+      padding: 15px;
       text-align: center;
     }
 
     #taulaTemperaturas th {
-      background-color: #f2f2f2;
-      font-weight: bold;
+      background-color: #3498db;
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      letter-spacing: 1px;
+    }
+
+    #taulaTemperaturas td {
+      border-bottom: 1px solid #eee;
+    }
+
+    #taulaTemperaturas tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    #taulaTemperaturas tbody tr:last-child td {
+      border-bottom: none;
     }
   </style>
 </head>
